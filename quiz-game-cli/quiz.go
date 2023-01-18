@@ -1,19 +1,22 @@
 package main
 
 import (
-	// "encoding/csv"
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"io"
 	"log"
 	"os"
-	"strconv"
-	"flag"
+	"strings"
 )
 
 
 func main() {
 	filepath := flag.String("f", "problems.csv", "Path of CSV file")
+	time_limit := flag.Int("t", 30, "Time limit for quiz (in seconds)")
+
+	_ = time_limit
+
 	flag.Parse()
 
 	file, err := os.Open(*filepath)
@@ -37,12 +40,9 @@ func main() {
 
 		number_of_questions++;
 		fmt.Print("What is " + line[0] + "? ")
-		var response int
+		var response string
 		fmt.Scanln(&response)
-		ans, err := strconv.Atoi(line[1])
-		if (err != nil) {
-			panic(err)
-		}
+		ans := strings.Trim(line[1], " /*")
 		if (response == ans) {
 			correct++
 		}
